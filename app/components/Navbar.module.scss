@@ -1,0 +1,110 @@
+.header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* MOBILE HEADER */
+.mobileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+/* DESKTOP LAYOUT CONTAINER */
+.desktopWrapper {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.showMobileNav {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+
+  .navList {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
+
+/* LOGO - used on both mobile and desktop */
+.logo,
+.logoDesktop {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.logoIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.logoText {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* On desktop only center the logo */
+.logoDesktop {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: flex;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+}
+
+/* Hamburger toggle */
+.hamburger {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Navigation lists */
+.leftNav,
+.rightNav {
+  flex: 1;
+}
+
+.rightNav {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navList {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navItem {
+  list-style: none;
+}
+
+.link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

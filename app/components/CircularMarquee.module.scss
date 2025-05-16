@@ -1,0 +1,40 @@
+.wrapper {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    background-color: #fff;
+    padding: 1rem 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .track {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll 20s linear infinite;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #111;
+  }
+  
+  .track span {
+    display: inline-block;
+    padding-right: 2rem;
+  }
+  
+  @keyframes scroll {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .track {
+      font-size: 1.2rem;
+    }
+  }
+  

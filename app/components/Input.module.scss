@@ -1,0 +1,31 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  
+  .label {
+    font-size: 0.9rem;
+    color: #333;
+  }
+  
+  .input {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: white;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease;
+  
+    &:focus {
+      border-color: #666;
+    }
+  }
+  .error {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
+  

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputComponent from './Input';
 import styles from './LoginPage.module.scss';
 import { useRouter } from 'next/navigation';
@@ -13,8 +13,29 @@ const LoginForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
+  const [isSupabaseReady, setIsSupabaseReady] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    // Check if Supabase is properly configured
+    const checkSupabase = async () => {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        if (error) {
+          console.error('Supabase configuration error:', error);
+          setError('Authentication service is not properly configured. Please try again later.');
+        } else {
+          setIsSupabaseReady(true);
+        }
+      } catch (err) {
+        console.error('Supabase connection error:', err);
+        setError('Unable to connect to authentication service. Please check your internet connection.');
+      }
+    };
+
+    checkSupabase();
+  }, []);
 
   const validateEmail = (value: string) => {
     if (!value) return 'Email is required';
@@ -26,6 +47,11 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (!isSupabaseReady) {
+      setError('Authentication service is not ready. Please try again in a moment.');
+      return;
+    }
 
     const emailError = validateEmail(email);
     if (emailError || !password) {
@@ -42,7 +68,11 @@ const LoginForm: React.FC = () => {
       });
 
       if (error) {
-        setError(error.message);
+        if (error.message.includes('Invalid login credentials')) {
+          setError('Invalid email or password');
+        } else {
+          setError(error.message);
+        }
         return;
       }
 
@@ -51,14 +81,27 @@ const LoginForm: React.FC = () => {
         router.refresh();
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
       console.error('Login error:', err);
+      if (err instanceof Error) {
+        if (err.message.includes('Failed to fetch')) {
+          setError('Unable to connect to the server. Please check your internet connection.');
+        } else {
+          setError('An unexpected error occurred. Please try again.');
+        }
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const handleSocialLogin = async (provider: 'google' | 'azure' | 'apple') => {
+    if (!isSupabaseReady) {
+      setError('Authentication service is not ready. Please try again in a moment.');
+      return;
+    }
+
     try {
       setSocialLoading(provider);
       setError(null);
@@ -74,8 +117,16 @@ const LoginForm: React.FC = () => {
         setError(error.message);
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
       console.error('Social login error:', err);
+      if (err instanceof Error) {
+        if (err.message.includes('Failed to fetch')) {
+          setError('Unable to connect to the server. Please check your internet connection.');
+        } else {
+          setError('An unexpected error occurred. Please try again.');
+        }
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
     } finally {
       setSocialLoading(null);
     }
@@ -96,7 +147,7 @@ const LoginForm: React.FC = () => {
           onBlur={() => setTouched(true)}
           error={error && touched ? error : undefined}
           touched={touched}
-          disabled={loading}
+          disabled={loading || !isSupabaseReady}
         />
 
         <InputComponent
@@ -109,7 +160,7 @@ const LoginForm: React.FC = () => {
           onBlur={() => setTouched(true)}
           error={!password && touched ? 'Password is required' : undefined}
           touched={touched}
-          disabled={loading}
+          disabled={loading || !isSupabaseReady}
         />
 
         {error && (
@@ -121,7 +172,7 @@ const LoginForm: React.FC = () => {
         <button 
           type="submit" 
           className={styles.continueBtn} 
-          disabled={loading}
+          disabled={loading || !isSupabaseReady}
         >
           {loading ? 'Logging in...' : 'Continue'}
         </button>
@@ -139,7 +190,7 @@ const LoginForm: React.FC = () => {
         <button 
           className={styles.socialBtn} 
           onClick={() => handleSocialLogin('google')}
-          disabled={!!socialLoading}
+          disabled={!!socialLoading || !isSupabaseReady}
         >
           <img src="/icons/google.svg" alt="Google" />
           {socialLoading === 'google' ? 'Connecting...' : 'Continue with Google'}
@@ -147,7 +198,7 @@ const LoginForm: React.FC = () => {
         <button 
           className={styles.socialBtn} 
           onClick={() => handleSocialLogin('azure')}
-          disabled={!!socialLoading}
+          disabled={!!socialLoading || !isSupabaseReady}
         >
           <img src="/icons/microsoft.svg" alt="Microsoft" />
           {socialLoading === 'azure' ? 'Connecting...' : 'Continue with Microsoft Account'}
@@ -155,7 +206,7 @@ const LoginForm: React.FC = () => {
         <button 
           className={styles.socialBtn} 
           onClick={() => handleSocialLogin('apple')}
-          disabled={!!socialLoading}
+          disabled={!!socialLoading || !isSupabaseReady}
         >
           <img src="/icons/apple.svg" alt="Apple" />
           {socialLoading === 'apple' ? 'Connecting...' : 'Continue with Apple'}

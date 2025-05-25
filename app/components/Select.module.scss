@@ -10,9 +10,15 @@
     color: #333;
   }
   
+  .selectWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
   .select {
     padding: 0.75rem 1rem;
-    padding-right: 2.5rem; // space for icon
+    padding-right: 2.5rem; // Space for the reset button
     border-radius: 12px;
     border: 1px solid #ccc;
     font-size: 1rem;
@@ -24,5 +30,38 @@
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 1rem;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      border-color: #666;
+    }
+  }
+  
+  .resetButton {
+    position: absolute;
+    right: 2.5rem; // Position before the dropdown arrow
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+    z-index: 1;
+
+    &:hover {
+      color: #333;
+    }
+
+    &:focus {
+      outline: none;
+      color: #333;
+    }
   }
   

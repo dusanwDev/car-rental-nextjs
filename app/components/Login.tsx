@@ -77,7 +77,21 @@ const LoginForm: React.FC = () => {
       }
 
       if (data?.user) {
-        router.push('/');
+        console.log('Login successful, session:', data.session);
+        console.log('User:', data.user);
+        
+        // Get the redirect URL from the query parameters
+        const params = new URLSearchParams(window.location.search);
+        const redirectTo = params.get('redirectedFrom') || '/';
+        
+        // Wait a moment to ensure session is set
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Check session again before redirect
+        const { data: { session } } = await supabase.auth.getSession();
+        console.log('Session before redirect:', session);
+        
+        router.push(redirectTo);
         router.refresh();
       }
     } catch (err) {
@@ -148,6 +162,8 @@ const LoginForm: React.FC = () => {
           error={error && touched ? error : undefined}
           touched={touched}
           disabled={loading || !isSupabaseReady}
+          variant="light"
+
         />
 
         <InputComponent
@@ -161,6 +177,8 @@ const LoginForm: React.FC = () => {
           error={!password && touched ? 'Password is required' : undefined}
           touched={touched}
           disabled={loading || !isSupabaseReady}
+          variant="light"
+
         />
 
         {error && (
@@ -171,7 +189,7 @@ const LoginForm: React.FC = () => {
 
         <button 
           type="submit" 
-          className={styles.continueBtn} 
+          className={styles.submitButton} 
           disabled={loading || !isSupabaseReady}
         >
           {loading ? 'Logging in...' : 'Continue'}

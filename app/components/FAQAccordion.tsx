@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import styles from './FAQAccordion.module.scss';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const faqData = [
   {
@@ -45,7 +47,7 @@ const FAQAccordion: React.FC = () => {
           Frequently Asked <br /> Question
         </h2>
         <p>
-          Whether you’re looking for a modern apartment in the city or a
+          Whether you're looking for a modern apartment in the city or a
           peaceful home in the suburbs, our listings offer something for
           everyone.
         </p>
@@ -60,19 +62,17 @@ const FAQAccordion: React.FC = () => {
               aria-controls={`faq-content-${index}`}
             >
               {item.question}
-              <span className={styles.arrow}>
-                {openIndex === index ? '▲' : '▼'}
+              <span className={`${styles.arrow} ${openIndex === index ? styles.arrowRotated : ''}`}>
+                <KeyboardArrowDownIcon />
               </span>
             </button>
-            {openIndex === index && (
-              <div
-                id={`faq-content-${index}`}
-                className={styles.answer}
-                aria-hidden={openIndex !== index}
-              >
-                {item.answer}
-              </div>
-            )}
+            <div
+              id={`faq-content-${index}`}
+              className={`${styles.answer} ${openIndex === index ? styles.answerOpen : ''}`}
+              aria-hidden={openIndex !== index}
+            >
+              {item.answer}
+            </div>
           </div>
         ))}
       </div>

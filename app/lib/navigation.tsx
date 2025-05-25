@@ -8,10 +8,7 @@ export const navLinks: NavItems[] = [
         path:'/home',
         text:'Home'
     },
-    {
-        path:'/faq',
-        text:'FAQ'
-    },
+
     {
         path:'/about',
         text:'About'
@@ -19,13 +16,14 @@ export const navLinks: NavItems[] = [
 ]
 
 export const navLinksRight: NavItems[] = [
+
     {
-        path:'/contact',
-        text:'Contact'
+        path:'/book-call',
+        text:'Book A Call'
     },
     {
-        path:'/book-a-call',
-        text:'Book A Call'
+        path:'/login',
+        text:'Login'
     },
 
 ]

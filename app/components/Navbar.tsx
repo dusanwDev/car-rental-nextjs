@@ -1,12 +1,48 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavbarLink from './NavbarLink';
 import { navLinks, navLinksRight } from '../lib/navigation';
 import styles from './Navbar.module.scss';
+import { supabase } from '../lib/superbaseclient';
+import UserMenu from './UserMenu';
 
 const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        // Get user's full name from metadata or user data
+        const fullName = session.user.user_metadata?.full_name || 
+                        session.user.user_metadata?.name ||
+                        session.user.email?.split('@')[0] ||
+                        'User';
+        setUserName(fullName);
+      }
+    };
+
+    getUserData();
+
+    // Subscribe to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        const fullName = session.user.user_metadata?.full_name || 
+                        session.user.user_metadata?.name ||
+                        session.user.email?.split('@')[0] ||
+                        'User';
+        setUserName(fullName);
+      } else {
+        setUserName(null);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const toggleMenu = () => setMobileOpen((prev) => !prev);
 
@@ -47,11 +83,17 @@ const Navbar: React.FC = () => {
 
         <nav className={styles.rightNav} aria-label="Secondary navigation">
           <ul className={styles.navList}>
-            {navLinksRight.map((link) => (
-              <li className={styles.navItem} key={link.path}>
-                <NavbarLink path={link.path} text={link.text} />
+            {userName ? (
+              <li className={styles.navItem}>
+                <UserMenu userName={userName} />
               </li>
-            ))}
+            ) : (
+              navLinksRight.map((link) => (
+                <li className={styles.navItem} key={link.path}>
+                  <NavbarLink path={link.path} text={link.text} />
+                </li>
+              ))
+            )}
           </ul>
         </nav>
       </div>

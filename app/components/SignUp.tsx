@@ -5,19 +5,26 @@ import InputComponent from './Input';
 import styles from './LoginPage.module.scss';
 import { supabase } from '../lib/superbaseclient';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const SignUpForm: React.FC = () => {
   const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
   const [touched, setTouched] = useState({
+    firstName: false,
+    lastName: false,
     email: false,
     password: false,
     confirmPassword: false,
   });
   const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -31,7 +38,23 @@ const SignUpForm: React.FC = () => {
 
   const validate = () => {
     let valid = true;
-    const newErrors = { email: '', password: '', confirmPassword: '' };
+    const newErrors = { 
+      firstName: '', 
+      lastName: '', 
+      email: '', 
+      password: '', 
+      confirmPassword: '' 
+    };
+
+    if (!formData.firstName) {
+      newErrors.firstName = 'First name is required';
+      valid = false;
+    }
+
+    if (!formData.lastName) {
+      newErrors.lastName = 'Last name is required';
+      valid = false;
+    }
 
     if (!formData.email) {
       newErrors.email = 'Email is required';
@@ -63,7 +86,13 @@ const SignUpForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTouched({ email: true, password: true, confirmPassword: true });
+    setTouched({ 
+      firstName: true, 
+      lastName: true, 
+      email: true, 
+      password: true, 
+      confirmPassword: true 
+    });
     setError('');
     setSuccess('');
 
@@ -77,6 +106,12 @@ const SignUpForm: React.FC = () => {
       const { error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          data: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+          }
+        }
       });
       if (signUpError) {
         setError(signUpError.message);
@@ -136,6 +171,36 @@ const SignUpForm: React.FC = () => {
         </div>
       )}
       <form onSubmit={handleSubmit} className={styles.form} noValidate aria-describedby={error ? 'form-error' : undefined}>
+        <div className={styles.nameFields}>
+          <InputComponent
+            name="firstName"
+            type="text"
+            labelText="First Name"
+            placeholder="John"
+            value={formData.firstName}
+            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+            onBlur={() => setTouched((prev) => ({ ...prev, firstName: true }))}
+            error={errors.firstName}
+            touched={touched.firstName}
+            disabled={loading}
+          variant="light"
+
+          />
+          <InputComponent
+            name="lastName"
+            type="text"
+            labelText="Last Name"
+            placeholder="Doe"
+            value={formData.lastName}
+            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+            onBlur={() => setTouched((prev) => ({ ...prev, lastName: true }))}
+            error={errors.lastName}
+            touched={touched.lastName}
+            disabled={loading}
+          variant="light"
+
+          />
+        </div>
         <InputComponent
           name="email"
           type="email"
@@ -147,6 +212,8 @@ const SignUpForm: React.FC = () => {
           error={errors.email}
           touched={touched.email}
           disabled={loading}
+          variant="light"
+
         />
         <InputComponent
           name="password"
@@ -159,6 +226,8 @@ const SignUpForm: React.FC = () => {
           error={errors.password}
           touched={touched.password}
           disabled={loading}
+          variant="light"
+
         />
         <InputComponent
           name="confirmPassword"
@@ -171,6 +240,8 @@ const SignUpForm: React.FC = () => {
           error={errors.confirmPassword}
           touched={touched.confirmPassword}
           disabled={loading}
+          variant="light"
+
         />
         <button type="submit" className={styles.continueBtn} disabled={loading} aria-disabled={loading}>
           {loading ? 'Signing up...' : 'Sign Up'}
@@ -189,7 +260,13 @@ const SignUpForm: React.FC = () => {
           disabled={!!socialLoading}
           aria-disabled={!!socialLoading}
         >
-          <img src="/icons/google.svg" alt="Google logo" />
+          <Image
+            src="/icons/google.svg"
+            alt="Google logo"
+            width={20}
+            height={20}
+            className={styles.socialIcon}
+          />
           {socialLoading === 'google' ? 'Connecting...' : 'Continue with Google'}
         </button>
         <button
@@ -198,7 +275,13 @@ const SignUpForm: React.FC = () => {
           disabled={!!socialLoading}
           aria-disabled={!!socialLoading}
         >
-          <img src="/icons/microsoft.svg" alt="Microsoft logo" />
+          <Image
+            src="/icons/microsoft.svg"
+            alt="Microsoft logo"
+            width={20}
+            height={20}
+            className={styles.socialIcon}
+          />
           {socialLoading === 'azure' ? 'Connecting...' : 'Continue with Microsoft Account'}
         </button>
         <button
@@ -207,7 +290,13 @@ const SignUpForm: React.FC = () => {
           disabled={!!socialLoading}
           aria-disabled={!!socialLoading}
         >
-          <img src="/icons/apple.svg" alt="Apple logo" />
+          <Image
+            src="/icons/apple.svg"
+            alt="Apple logo"
+            width={20}
+            height={20}
+            className={styles.socialIcon}
+          />
           {socialLoading === 'apple' ? 'Connecting...' : 'Continue with Apple'}
         </button>
       </div>

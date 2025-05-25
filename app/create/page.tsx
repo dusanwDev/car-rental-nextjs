@@ -1,13 +1,22 @@
-import * as React from 'react';
+"use client";
+
 import PostHouseForm from '../components/PostHouseForm';
 
-interface ICreateProps {
+export default function CreatePage() {
+  return (
+    <main
+      style={{
+        maxWidth: 1000,
+        minHeight: '100vh',
+        margin: '0 auto',
+        padding: 24,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <PostHouseForm />
+    </main>
+  );
 }
-
-const CreateListingComponent: React.FunctionComponent<ICreateProps> = (props) => {
-  return <>
-    <PostHouseForm />
-  </>;
-};
-
-export default CreateListingComponent;

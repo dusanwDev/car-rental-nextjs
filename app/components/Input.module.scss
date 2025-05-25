@@ -2,29 +2,101 @@
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+  
+    &.light {
+      .label {
+        margin-left: 5px;
+        color: #333;
+        text-shadow: none;
+      }
+  
+      .input {
+        background-color: white;
+        color: #333;
+        border: 1px solid #ccc;
+  
+        &::placeholder {
+          color: #666;
+        }
+  
+        &:focus {
+          border-color: #666;
+          background-color: white;
+        }
+      }
+  
+      .resetButton {
+        color: #666;
+  
+        &:hover, &:focus {
+          color: #333;
+        }
+      }
+    }
   }
   
   .label {
     font-size: 0.9rem;
-    color: #333;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .inputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
   }
   
   .input {
     padding: 0.75rem 1rem;
+    padding-right: 2.5rem;
     border-radius: 12px;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     font-size: 1rem;
-    background-color: white;
-    color: #333;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
     outline: none;
     transition: border-color 0.2s ease;
+    width: 100%;
+  
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
   
     &:focus {
-      border-color: #666;
+      border-color: rgba(255, 255, 255, 0.4);
+      background-color: rgba(255, 255, 255, 0.15);
     }
   }
+  
+  .resetButton {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  
+    &:hover {
+      color: white;
+    }
+  
+    &:focus {
+      outline: none;
+      color: white;
+    }
+  }
+  
   .error {
-    color: #d32f2f;
+    color: #ff6b6b;
     font-size: 0.85rem;
     margin-top: 0.25rem;
   }

@@ -11,6 +11,8 @@ import FAQAccordion from './FAQAccordion';
 import CircularMarquee from './CircularMarquete';
 import Footer from './Footer';
 import FooterHeroBanner from './FooterHeroBanner';
+import FilterBar from './FilterBar';
+import { supabase } from '../lib/superbaseclient';
 
 const countries = ['Indonesia', 'France', 'Italy', 'Spain', 'Turkey'];
 
@@ -18,15 +20,15 @@ const LandingPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [propertyType, setPropertyType] = useState('Property Type');
   const [price, setPrice] = useState('Price');
-  const [location, setLocation] = useState('All Cities');
+  const [city, setCity] = useState('All Cities');
+  const [country, setCountry] = useState('All Countries');
+  const [area, setArea] = useState('Area');
 
   const [currentCountryIndex, setCurrentCountryIndex] = useState(0);
   const [fadeIn, setFadeIn] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   const router = useRouter();
-
-  // Fake auth state (replace this with real logic e.g. from context or cookies)
-  const isLoggedIn = false;
 
   useEffect(() => {
     const countryInterval = setInterval(() => {
@@ -40,13 +42,40 @@ const LandingPage: React.FC = () => {
     return () => clearInterval(countryInterval);
   }, []);
 
+  useEffect(() => {
+    // Check auth status on mount
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+    };
+    checkAuth();
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
   const handleSearch = () => {
-    if (!isLoggedIn) {
-      router.push('/login');
-    } else {
-      // Add your real search logic here if user is logged in
-      console.log('Search submitted:', { searchTerm, propertyType, price, location });
+    router.push('/residences');
+  };
+
+  // Handler for property card click
+  const handlePropertyClick = async (propertyId: string) => {
+    if (!isAuthenticated) {
+      router.push('/login?redirectedFrom=/home');
+      return;
     }
+    // Show property details dialog or navigate as needed (default: do nothing)
+  };
+
+  // Handler for pagination
+  const handlePageChange = async (event: any, value: number, setPage: (v: number) => void) => {
+    if (!isAuthenticated) {
+      router.push('/login?redirectedFrom=/home');
+      return;
+    }
+    setPage(value);
   };
 
   return (
@@ -71,38 +100,34 @@ const LandingPage: React.FC = () => {
           <img src="image/house1.png" alt="Modern home" className={styles.heroImage} />
         </div>
 
-        <div className={styles.filterBar}>
-          <InputComponent
-            name="search"
-            labelText="Looking For"
-            placeholder="What to look for ?"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onBlur={() => {}}
+          <FilterBar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            propertyType={propertyType}
+            setPropertyType={setPropertyType}
+            price={price}
+            setPrice={setPrice}
+            city={city}
+            setCity={setCity}
+            country={country}
+            setCountry={setCountry}
+            area={area}
+            setArea={setArea}
+            onSearch={handleSearch}
           />
-          <SelectComponent
-            value={propertyType}
-            onChange={setPropertyType}
-            options={['Property Type', 'Villa', 'Apartment', 'Land']}
-          />
-          <SelectComponent
-            value={price}
-            onChange={setPrice}
-            options={['Price', 'Under $100k', '$100k - $300k', 'Over $300k']}
-          />
-          <SelectComponent
-            value={location}
-            onChange={setLocation}
-            options={['All Cities', 'Jakarta', 'Bali', 'Yogyakarta']}
-          />
-          <button className={styles.searchBtn} aria-label="Search" onClick={handleSearch}>
-             Search
-          </button>
-        </div>
       </section>
 
       <section>
-        <PropertyGrid />
+        <PropertyGrid
+          searchTerm={searchTerm}
+          propertyType={propertyType}
+          price={price}
+          city={city}
+          country={country}
+          area={area}
+          onPropertyClick={handlePropertyClick}
+          onPageChange={handlePageChange}
+        />
       </section>
 
       <ImageSliderForm />

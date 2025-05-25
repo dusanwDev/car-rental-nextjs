@@ -1,0 +1,305 @@
+@import '../styles/variables.scss';
+
+// Screen reader only class
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.bookCall {
+  padding: $spacing-xl $spacing-md;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: $font-family;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: $spacing-2xl;
+
+  h1 {
+    font-size: $font-size-4xl;
+    color: $primary-color;
+    margin-bottom: $spacing-md;
+  }
+
+  .subtitle {
+    font-size: $font-size-lg;
+    color: $text-color;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+.calendar {
+  margin-bottom: 3rem;
+}
+
+.calendarContainer {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  min-height: 700px;
+}
+
+.info {
+  margin-top: $spacing-2xl;
+  text-align: center;
+}
+
+.infoCard {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: $spacing-xl;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+
+  h2 {
+    color: $primary-color;
+    margin-bottom: $spacing-lg;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+
+    li {
+      padding: $spacing-md 0;
+      border-bottom: 1px solid $border-color;
+      color: $text-color;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:before {
+        content: "✓";
+        color: $primary-color;
+        margin-right: $spacing-sm;
+      }
+    }
+  }
+}
+
+.bookingForm {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: $spacing-xl;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+
+  .formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    label {
+      font-weight: 500;
+      color: $text-color;
+    }
+
+    select, input {
+      padding: $spacing-md;
+      border: 1px solid $border-color;
+      border-radius: $border-radius-md;
+      font-size: $font-size-base;
+      transition: border-color 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+      }
+
+      &.error {
+        border-color: $error-color;
+      }
+    }
+
+    select {
+      background-color: white;
+      cursor: pointer;
+    }
+  }
+
+  .errorMessage {
+    color: $error-color;
+    font-size: $font-size-sm;
+    margin-top: $spacing-xs;
+  }
+
+  .phoneInput {
+    :global(.PhoneInputInput) {
+      padding: $spacing-md;
+      border: 1px solid $border-color;
+      border-radius: $border-radius-md;
+      font-size: $font-size-base;
+      transition: border-color 0.2s;
+      width: 100%;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+      }
+    }
+
+    :global(.PhoneInputCountry) {
+      margin-right: $spacing-sm;
+      background: none;
+      border: none;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      font-size: 1.25rem;
+      min-width: 70px;
+      cursor: pointer;
+      box-shadow: none;
+    }
+
+    :global(.PhoneInputCountrySelect) {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      padding: 0 0.5rem;
+      min-width: 60px;
+      cursor: pointer;
+      box-shadow: none;
+      appearance: none;
+      outline: none;
+    }
+
+    :global(.PhoneInputCountryIcon) {
+      width: 32px;
+      height: 32px;
+      box-shadow: none;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    :global(.PhoneInputCountrySelectArrow) {
+      font-size: 1.5rem;
+      margin-left: 0.25rem;
+      color: $primary-color;
+    }
+  }
+
+  .submitBtn {
+    background-color: $primary-color;
+    color: white;
+    padding: $spacing-md;
+    border: none;
+    border-radius: $border-radius-md;
+    font-size: $font-size-lg;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+}
+
+.success {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: $spacing-2xl $spacing-xl;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+
+  h1 {
+    color: $primary-color;
+    margin-bottom: $spacing-xl;
+  }
+
+  .confirmationDetails {
+    margin-bottom: $spacing-xl;
+    color: $text-color;
+
+    p {
+      margin: $spacing-sm 0;
+    }
+  }
+
+  .newBookingBtn {
+    background-color: $primary-color;
+    color: white;
+    padding: $spacing-md $spacing-xl;
+    border: none;
+    border-radius: $border-radius-md;
+    font-size: $font-size-lg;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+}
+
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  background-color: #111;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  min-width: 200px;
+
+  &:hover {
+    background-color: #333;
+  }
+
+  &:focus {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .bookCall {
+    padding: $spacing-md;
+
+    .hero {
+      h1 {
+        font-size: $font-size-3xl;
+      }
+
+      .subtitle {
+        font-size: $font-size-base;
+      }
+    }
+
+    .bookingForm {
+      padding: $spacing-lg;
+    }
+
+    .info {
+      .infoCard {
+        padding: $spacing-lg;
+      }
+    }
+  }
+} 

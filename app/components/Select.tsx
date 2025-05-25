@@ -10,21 +10,36 @@ interface Select {
 }
 
 const SelectComponent: React.FC<Select> = ({ value, onChange, options }) => {
+  const handleReset = () => {
+    onChange(options[0]); // Reset to first option (usually the default)
+  };
+
   return (
     <div className={styles.wrapper}>
-      <label htmlFor="lookingFor" className={styles.label}>Looking For</label>
-      <select
-        id="lookingFor"
-        className={styles.select}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+      <div className={styles.selectWrapper}>
+        <select
+          id="lookingFor"
+          className={styles.select}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        {value !== options[0] && (
+          <button
+            type="button"
+            className={styles.resetButton}
+            onClick={handleReset}
+            aria-label="Reset selection"
+          >
+            ×
+          </button>
+        )}
+      </div>
     </div>
   );
 };

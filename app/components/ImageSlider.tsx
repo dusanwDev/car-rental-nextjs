@@ -5,9 +5,9 @@ import styles from './ImageSliderForm.module.scss';
 import Input from './Input'; // Make sure the path is correct
 
 const images = [
-  '/images/home1.jpg',
-  '/images/home2.jpg',
-  '/images/home3.jpg',
+  'image/house1.png',
+  'image/house2.png',
+  'image/house3.png',
 ];
 
 const ImageSliderForm: React.FC = () => {
@@ -15,7 +15,7 @@ const ImageSliderForm: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    intent: '',
+    email: '',
     notes: ''
   });
 
@@ -62,9 +62,9 @@ const ImageSliderForm: React.FC = () => {
             </div>
             <div className={styles.field}>
             <Input
-                labelText="First Name"
-                name="firstName"
-                value={formData.firstName}
+                labelText="Last Name"
+                name="lastName"
+                value={formData.lastName}
                 onChange={handleFormInputChange}
                 onBlur={() => {}}
                 type="text"
@@ -75,9 +75,9 @@ const ImageSliderForm: React.FC = () => {
 
           <div className={styles.field}>
             <Input
-                labelText="First Name"
-                name="firstName"
-                value={formData.firstName}
+                labelText="E-mail"
+                name="email"
+                value={formData.email}
                 onChange={handleFormInputChange}
                 onBlur={() => {}}
                 type="text"

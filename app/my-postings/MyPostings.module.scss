@@ -17,6 +17,7 @@
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
+  margin-top: 20px;
 }
 
 .actions {
@@ -26,7 +27,7 @@
 }
 
 .addButton {
-  background-color: #0ba46f;
+  background-color: black;
   color: white;
   padding: 0.75rem 1.5rem;
   border: none;
@@ -41,7 +42,7 @@
   }
 
   &:focus {
-    outline: 2px solid #0ba46f;
+    outline: 2px solid black;
     outline-offset: 2px;
   }
 }
@@ -74,7 +75,7 @@
   }
 
   &:focus {
-    outline: 2px solid #0ba46f;
+    outline: 2px solid black;
     outline-offset: 2px;
   }
 }
@@ -136,7 +137,7 @@
 .price {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #0ba46f;
+  color: black;
   margin-bottom: 0.5rem;
 }
 
@@ -177,7 +178,7 @@
   transition: all 0.2s ease;
 
   &:focus {
-    outline: 2px solid #0ba46f;
+    outline: 2px solid black;
     outline-offset: 2px;
   }
 }

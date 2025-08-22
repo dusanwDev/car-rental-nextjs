@@ -282,7 +282,7 @@ const SignUpForm: React.FC = () => {
             height={20}
             className={styles.socialIcon}
           />
-          {socialLoading === 'azure' ? 'Connecting...' : 'Continue with Microsoft Account'}
+          {socialLoading === 'azure' ? 'Connecting...' : 'Continue with Microsoft'}
         </button>
         <button
           className={styles.socialBtn}

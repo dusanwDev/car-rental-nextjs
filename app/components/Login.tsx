@@ -210,7 +210,7 @@ const LoginForm: React.FC = () => {
           onClick={() => handleSocialLogin('google')}
           disabled={!!socialLoading || !isSupabaseReady}
         >
-          <img src="/icons/google.svg" alt="Google" />
+          <img src="/icons/google.svg" alt="Google" className={styles.socialIcon} />
           {socialLoading === 'google' ? 'Connecting...' : 'Continue with Google'}
         </button>
         <button 
@@ -218,15 +218,15 @@ const LoginForm: React.FC = () => {
           onClick={() => handleSocialLogin('azure')}
           disabled={!!socialLoading || !isSupabaseReady}
         >
-          <img src="/icons/microsoft.svg" alt="Microsoft" />
-          {socialLoading === 'azure' ? 'Connecting...' : 'Continue with Microsoft Account'}
+          <img src="/icons/microsoft.svg" alt="Microsoft" className={styles.socialIcon} />
+          {socialLoading === 'azure' ? 'Connecting...' : 'Continue with Microsoft'}
         </button>
         <button 
           className={styles.socialBtn} 
           onClick={() => handleSocialLogin('apple')}
           disabled={!!socialLoading || !isSupabaseReady}
         >
-          <img src="/icons/apple.svg" alt="Apple" />
+          <img src="/icons/apple.svg" alt="Apple" className={styles.socialIcon} />
           {socialLoading === 'apple' ? 'Connecting...' : 'Continue with Apple'}
         </button>
       </div>

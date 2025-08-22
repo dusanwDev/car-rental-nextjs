@@ -51,7 +51,6 @@ const Navbar: React.FC = () => {
       {/* Mobile Top Row */}
       <div className={styles.mobileHeader}>
         <div className={styles.logo}>
-          <img src="/logo.png" alt="Aruna logo" className={styles.logoIcon} />
           <span className={styles.logoText}>Aruna</span>
         </div>
         <button
@@ -77,7 +76,6 @@ const Navbar: React.FC = () => {
         </nav>
 
         <div className={styles.logoDesktop}>
-          <img src="/logo.png" alt="Aruna logo" className={styles.logoIcon} />
           <span className={styles.logoText}>Aruna</span>
         </div>
 

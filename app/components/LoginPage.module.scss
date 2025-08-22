@@ -110,6 +110,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    align-items: stretch; /* Ensure all buttons stretch to full width */
   }
 
   .socialBtn {
@@ -126,6 +127,8 @@
     background: white;
     transition: all 0.2s ease;
     width: 100%;
+    height: 56px; /* Fixed height for all buttons */
+    min-height: 56px; /* Ensure minimum height */
 
     &:hover {
       background: #f8f8f8;
@@ -187,6 +190,20 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+  }
+
+  /* Responsive design for smaller screens */
+  @media (max-width: 480px) {
+    .socialBtn {
+      height: 52px; /* Slightly smaller height on mobile */
+      font-size: 0.9rem;
+      gap: 0.5rem;
+    }
+
+    .socialIcon {
+      width: 18px;
+      height: 18px;
+    }
   }
 
   .submitButton {

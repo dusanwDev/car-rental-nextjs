@@ -42,7 +42,7 @@ const validationSchema = Yup.object({
   price: Yup.number().required('Price is required').min(1000, 'Too low'),
   city: Yup.string().required('City is required'),
   country: Yup.string().required('Country is required'),
-  area: Yup.number().required('Area is required').min(10),
+  area: Yup.number().required('Area is required').min(10, 'Area must be at least 10 m²'),
   bedrooms: Yup.number().required('Number of bedrooms is required').min(1),
   bathrooms: Yup.number().required('Number of bathrooms is required').min(1),
   type: Yup.string().required('Type is required'),
@@ -214,6 +214,9 @@ const PostHouseForm: React.FC<PostHouseFormProps> = ({ onSuccess, initialData })
             error={formik.errors.price}
             touched={formik.touched.price}
             variant="light"
+            preventNegative={true}
+            min={0}
+            onValidationError={(error) => formik.setFieldError('price', error)}
           />
           <InputComponent
             name="city"
@@ -245,6 +248,9 @@ const PostHouseForm: React.FC<PostHouseFormProps> = ({ onSuccess, initialData })
             error={formik.errors.area}
             touched={formik.touched.area}
             variant="light"
+            preventNegative={true}
+            min={0}
+            onValidationError={(error) => formik.setFieldError('area', error)}
           />
         </div>
         <div className={styles.formCol}>
@@ -258,6 +264,9 @@ const PostHouseForm: React.FC<PostHouseFormProps> = ({ onSuccess, initialData })
             error={formik.errors.bedrooms}
             touched={formik.touched.bedrooms}
             variant="light"
+            preventNegative={true}
+            min={0}
+            onValidationError={(error) => formik.setFieldError('bedrooms', error)}
           />
           <InputComponent
             name="bathrooms"
@@ -269,6 +278,9 @@ const PostHouseForm: React.FC<PostHouseFormProps> = ({ onSuccess, initialData })
             error={formik.errors.bathrooms}
             touched={formik.touched.bathrooms}
             variant="light"
+            preventNegative={true}
+            min={0}
+            onValidationError={(error) => formik.setFieldError('bathrooms', error)}
           />
           <SelectComponent
             value={formik.values.type}

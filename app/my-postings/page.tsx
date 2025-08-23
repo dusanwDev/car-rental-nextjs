@@ -30,6 +30,10 @@ const MyPostingsPage = () => {
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const router = useRouter();
 
+  const getImageUrl = (imagePath: string) => {
+    return supabase.storage.from('property-images').getPublicUrl(imagePath).data.publicUrl;
+  };
+
   useEffect(() => {
     fetchProperties();
   }, []);
@@ -59,16 +63,56 @@ const MyPostingsPage = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this property?')) return;
-
     try {
-      const { error } = await supabase
+      // Get current user to ensure we're authenticated
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setError('User not authenticated');
+        return;
+      }
+
+      console.log('Attempting to delete property:', id, 'for user:', user.id);
+
+      // First, let's check if the property exists and who owns it
+      const { data: existingProperty, error: fetchError } = await supabase
         .from('properties')
-        .delete()
-        .eq('id', id);
+        .select('id, user_id')
+        .eq('id', id)
+        .single();
+
+      console.log('Property check:', { existingProperty, fetchError });
+
+      if (fetchError) {
+        console.error('Error fetching property:', fetchError);
+        setError('Property not found');
+        return;
+      }
+
+      if (existingProperty.user_id !== user.id) {
+        console.error('User mismatch:', { propertyOwner: existingProperty.user_id, currentUser: user.id });
+        setError('You do not have permission to delete this property');
+        return;
+      }
+
+      // Now attempt the delete
+      const { data, error, count } = await supabase
+        .from('properties')
+        .delete({ count: 'exact' })
+        .eq('id', id)
+        .eq('user_id', user.id);
+
+      console.log('Delete result:', { data, error, count });
 
       if (error) throw error;
+      
+      if (count === 0) {
+        setError('Delete operation completed but no rows were affected. Check RLS policies.');
+        return;
+      }
+
       setProperties(properties.filter(prop => prop.id !== id));
+      setError(null); // Clear any previous errors
+      console.log('Property deleted successfully');
     } catch (err) {
       setError('Failed to delete property');
       console.error('Error deleting property:', err);
@@ -107,14 +151,28 @@ const MyPostingsPage = () => {
       )}
 
       <div className={styles.actions}>
-        <button
-          onClick={() => setShowPostForm(true)}
-          className={styles.addButton}
-          aria-label="Add new property"
-        >
-          Post New Property
-        </button>
+        {!showPostForm ? (
+          <button
+            onClick={() => setShowPostForm(true)}
+            className={styles.addButton}
+            aria-label="Add new property"
+          >
+            Post New Property
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              setShowPostForm(false);
+              setEditingProperty(null);
+            }}
+            className={styles.addButton}
+            aria-label="View my postings"
+          >
+            Back to My Postings
+          </button>
+        )}
       </div>
+
 
       {showPostForm ? (
         <div className={styles.formContainer}>
@@ -135,7 +193,7 @@ const MyPostingsPage = () => {
                 <div className={styles.imageContainer}>
                   {property.images && property.images[0] && (
                     <img
-                      src={property.images[0]}
+                      src={getImageUrl(property.images[0])}
                       alt={`${property.type} in ${property.city}, ${property.country}`}
                       className={styles.propertyImage}
                     />
@@ -148,7 +206,7 @@ const MyPostingsPage = () => {
                   <div className={styles.details}>
                     <span>{property.area}m²</span>
                     <span>{property.bedrooms} beds</span>
-                    <span>{property.bathrooms} baths</span>
+                    <span>{property.bathrooms} bathrooms</span>
                   </div>
                   <div className={styles.actions}>
                     <button

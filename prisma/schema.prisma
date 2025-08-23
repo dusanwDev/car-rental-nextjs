@@ -8,9 +8,35 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String?
-  password  String
-  createdAt DateTime @default(now())
+  id         String     @id @default(uuid())
+  email      String     @unique
+  name       String?
+  password   String
+  createdAt  DateTime   @default(now())
+  properties Property[]
+}
+
+model Property {
+  id          String   @id @default(uuid())
+  price       Float
+  city        String
+  country     String
+  area        Int
+  bedrooms    Int
+  bathrooms   Int
+  type        String
+  title       String?
+  description String?
+  images      String[] // JSON array as string in SQLite
+  location    String?
+  is_featured Boolean  @default(false)
+  created_at  DateTime @default(now())
+  user_id     String
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([city])
+  @@index([country])
+  @@index([type])
+  @@index([is_featured])
 }

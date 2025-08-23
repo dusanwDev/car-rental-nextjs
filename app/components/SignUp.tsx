@@ -133,15 +133,22 @@ const SignUpForm: React.FC = () => {
     setError('');
     setSuccess('');
     try {
+      // Map provider names to Supabase OAuth provider names
+      const supabaseProvider = provider === 'azure' ? 'azure' : provider;
+
       const { error: socialError } = await supabase.auth.signInWithOAuth({
-        provider,
+        provider: supabaseProvider as any,
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
       if (socialError) {
-        setError(socialError.message);
+        console.error(`${provider} OAuth signup error:`, socialError);
+        setError(`Failed to sign up with ${provider}. ${socialError.message}`);
         errorRef.current?.focus();
+      } else {
+        // OAuth redirect successful - user will be redirected to the provider
+        console.log(`Redirecting to ${provider} OAuth signup...`);
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
@@ -250,56 +257,6 @@ const SignUpForm: React.FC = () => {
       <p className={styles.loginText}>
         Already have an account? <a href="/login">Log In</a>
       </p>
-      <div className={styles.divider}>
-        <span>OR</span>
-      </div>
-      <div className={styles.socialButtons}>
-        <button
-          className={styles.socialBtn}
-          onClick={() => handleSocialSignUp('google')}
-          disabled={!!socialLoading}
-          aria-disabled={!!socialLoading}
-        >
-          <Image
-            src="/icons/google.svg"
-            alt="Google logo"
-            width={20}
-            height={20}
-            className={styles.socialIcon}
-          />
-          {socialLoading === 'google' ? 'Connecting...' : 'Continue with Google'}
-        </button>
-        <button
-          className={styles.socialBtn}
-          onClick={() => handleSocialSignUp('azure')}
-          disabled={!!socialLoading}
-          aria-disabled={!!socialLoading}
-        >
-          <Image
-            src="/icons/microsoft.svg"
-            alt="Microsoft logo"
-            width={20}
-            height={20}
-            className={styles.socialIcon}
-          />
-          {socialLoading === 'azure' ? 'Connecting...' : 'Continue with Microsoft'}
-        </button>
-        <button
-          className={styles.socialBtn}
-          onClick={() => handleSocialSignUp('apple')}
-          disabled={!!socialLoading}
-          aria-disabled={!!socialLoading}
-        >
-          <Image
-            src="/icons/apple.svg"
-            alt="Apple logo"
-            width={20}
-            height={20}
-            className={styles.socialIcon}
-          />
-          {socialLoading === 'apple' ? 'Connecting...' : 'Continue with Apple'}
-        </button>
-      </div>
     </main>
   );
 };

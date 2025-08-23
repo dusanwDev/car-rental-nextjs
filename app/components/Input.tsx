@@ -15,6 +15,9 @@ interface InputProps {
   type?: string;
   disabled?: boolean;
   variant?: 'default' | 'light';
+  min?: number;
+  preventNegative?: boolean;
+  onValidationError?: (error: string) => void;
 }
 
 const InputComponent: React.FC<InputProps> = ({
@@ -29,12 +32,45 @@ const InputComponent: React.FC<InputProps> = ({
   type = 'text',
   disabled = false,
   variant = 'default',
+  min,
+  preventNegative = false,
+  onValidationError,
 }) => {
   const handleReset = () => {
     const event = {
       target: { value: '' }
     } as React.ChangeEvent<HTMLInputElement>;
     onChange(event);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    
+    // If preventNegative is true and type is number, prevent negative values
+    if (preventNegative && (type === 'number' || type === 'tel')) {
+      const numValue = parseFloat(newValue);
+      if (!isNaN(numValue) && numValue < 0) {
+        onValidationError?.("Negative values are not allowed");
+        return; // Don't update if negative
+      }
+      // Also prevent if the value starts with a minus sign
+      if (newValue.startsWith('-')) {
+        onValidationError?.("Negative values are not allowed");
+        return;
+      }
+    }
+    
+    onChange(e);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Prevent minus key input for number fields when preventNegative is true
+    if (preventNegative && (type === 'number' || type === 'tel')) {
+      if (e.key === '-' || e.key === 'Minus') {
+        e.preventDefault();
+        onValidationError?.("Negative values are not allowed");
+      }
+    }
   };
 
   return (
@@ -52,9 +88,11 @@ const InputComponent: React.FC<InputProps> = ({
           className={styles.input}
           placeholder={placeholder}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           onBlur={onBlur}
+          onKeyDown={handleKeyDown}
           disabled={disabled}
+          min={min}
           aria-describedby={error && touched ? `${name}-error` : undefined}
           aria-invalid={!!(error && touched)}
         />

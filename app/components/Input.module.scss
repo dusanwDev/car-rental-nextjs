@@ -23,6 +23,17 @@
           border-color: #666;
           background-color: white;
         }
+
+        // Remove number input arrows/spinners for light variant too
+        &[type="number"] {
+          -moz-appearance: textfield; // Firefox
+          
+          &::-webkit-outer-spin-button,
+          &::-webkit-inner-spin-button {
+            -webkit-appearance: none; // Chrome, Safari, Edge
+            margin: 0;
+          }
+        }
       }
   
       .resetButton {
@@ -66,6 +77,17 @@
     &:focus {
       border-color: rgba(255, 255, 255, 0.4);
       background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    // Remove number input arrows/spinners
+    &[type="number"] {
+      -moz-appearance: textfield; // Firefox
+      
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none; // Chrome, Safari, Edge
+        margin: 0;
+      }
     }
   }
   

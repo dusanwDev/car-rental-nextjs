@@ -120,15 +120,48 @@ const LoginForm: React.FC = () => {
       setSocialLoading(provider);
       setError(null);
 
+      // Map provider names to Supabase OAuth provider names
+      let supabaseProvider: string;
+      switch (provider) {
+        case 'google':
+          supabaseProvider = 'google';
+          break;
+        case 'azure':
+          // Microsoft Azure is called 'azure' in Supabase
+          supabaseProvider = 'azure';
+          break;
+        case 'apple':
+          supabaseProvider = 'apple';
+          break;
+        default:
+          throw new Error(`Unsupported provider: ${provider}`);
+      }
+
+      console.log(`Attempting OAuth with provider: ${provider} -> ${supabaseProvider}`);
+
+      console.log(`Attempting to sign in with provider: ${supabaseProvider}`);
+
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider,
+        provider: supabaseProvider as any,
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
 
       if (error) {
-        setError(error.message);
+        console.error(`${provider} OAuth error:`, error);
+        
+        // Specific error handling for common issues
+        if (error.message.includes('provider is not enabled')) {
+          setError(`${provider} provider is not enabled in Supabase. Please enable it in your Supabase dashboard under Authentication > Providers.`);
+        } else if (error.message.includes('Invalid redirect URI')) {
+          setError(`Invalid redirect URI. Please check your ${provider} OAuth configuration.`);
+        } else {
+          setError(`Failed to sign in with ${provider}. ${error.message}`);
+        }
+      } else {
+        // OAuth redirect successful - user will be redirected to the provider
+        console.log(`Redirecting to ${provider} OAuth...`);
       }
     } catch (err) {
       console.error('Social login error:', err);
@@ -199,37 +232,6 @@ const LoginForm: React.FC = () => {
       <p className={styles.signupText}>
         Don't have an account? <a href="/signup">Sign Up</a>
       </p>
-
-      <div className={styles.divider}>
-        <span>OR</span>
-      </div>
-
-      <div className={styles.socialButtons}>
-        <button 
-          className={styles.socialBtn} 
-          onClick={() => handleSocialLogin('google')}
-          disabled={!!socialLoading || !isSupabaseReady}
-        >
-          <img src="/icons/google.svg" alt="Google" className={styles.socialIcon} />
-          {socialLoading === 'google' ? 'Connecting...' : 'Continue with Google'}
-        </button>
-        <button 
-          className={styles.socialBtn} 
-          onClick={() => handleSocialLogin('azure')}
-          disabled={!!socialLoading || !isSupabaseReady}
-        >
-          <img src="/icons/microsoft.svg" alt="Microsoft" className={styles.socialIcon} />
-          {socialLoading === 'azure' ? 'Connecting...' : 'Continue with Microsoft'}
-        </button>
-        <button 
-          className={styles.socialBtn} 
-          onClick={() => handleSocialLogin('apple')}
-          disabled={!!socialLoading || !isSupabaseReady}
-        >
-          <img src="/icons/apple.svg" alt="Apple" className={styles.socialIcon} />
-          {socialLoading === 'apple' ? 'Connecting...' : 'Continue with Apple'}
-        </button>
-      </div>
     </div>
   );
 };

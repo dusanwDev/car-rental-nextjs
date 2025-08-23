@@ -1,8 +1,8 @@
 [build]
   command = "npm run build"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "18"
+
+# Remove the problematic plugin for now

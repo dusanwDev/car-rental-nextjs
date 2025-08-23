@@ -57,6 +57,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   return (
     <article 
       className={styles.card} 
+      
       onClick={handlePropertyClick} 
       style={{ cursor: 'pointer' }}
       role="button"

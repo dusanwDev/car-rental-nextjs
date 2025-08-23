@@ -37,6 +37,23 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
+    min-height: 310px;
+  }
+  
+  .propertyResults {
+    width: 100%;
+  }
+  
+  .resultsHeader {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .resultsCount {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+    font-weight: 500;
   }
   
   .pagination {

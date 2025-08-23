@@ -37,6 +37,7 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -119,6 +120,7 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
         const { count, error: countError } = await query;
         if (countError) throw countError;
         
+        setTotalCount(count || 0);
         setTotalPages(count ? Math.ceil(count / ITEMS_PER_PAGE) : 1);
 
         // Fetch paginated data
@@ -178,24 +180,44 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
   }
 
   return (
-    <>
-      <div className={styles.grid}>
+    <section className={styles.propertyResults} aria-label="Property search results">
+      <div className={styles.resultsHeader}>
+        <h2 className="sr-only">
+          {pathname === '/home' ? 'Featured Properties' : 'Property Search Results'}
+        </h2>
+        <p className={styles.resultsCount} aria-live="polite">
+          {totalCount === 0 
+            ? 'No properties found' 
+            : `Showing ${((currentPage - 1) * ITEMS_PER_PAGE) + 1}-${Math.min(currentPage * ITEMS_PER_PAGE, totalCount)} of ${totalCount} properties`
+          }
+        </p>
+      </div>
+      
+      <div className={styles.grid} role="list" aria-label="Properties">
         {properties.map((property: any) => (
-          <Property key={property.id} {...property} onClick={onPropertyClick ? () => onPropertyClick(property.id) : undefined} />
+          <div key={property.id} role="listitem">
+            <Property {...property} onClick={onPropertyClick ? () => onPropertyClick(property.id) : undefined} />
+          </div>
         ))}
       </div>
+      
       {totalPages > 1 && (
-        <div className={styles.pagination}>
+        <nav className={styles.pagination} aria-label="Property pagination navigation">
           <Pagination
             count={totalPages}
             page={currentPage}
             onChange={handleMuiPageChange}
             color="primary"
             shape="rounded"
+            size="large"
+            showFirstButton
+            showLastButton
+            siblingCount={1}
+            boundaryCount={1}
           />
-        </div>
+        </nav>
       )}
-    </>
+    </section>
   );
 };
 

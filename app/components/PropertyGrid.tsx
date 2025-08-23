@@ -185,12 +185,7 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
         <h2 className="sr-only">
           {pathname === '/home' ? 'Featured Properties' : 'Property Search Results'}
         </h2>
-        <p className={styles.resultsCount} aria-live="polite">
-          {totalCount === 0 
-            ? 'No properties found' 
-            : `Showing ${((currentPage - 1) * ITEMS_PER_PAGE) + 1}-${Math.min(currentPage * ITEMS_PER_PAGE, totalCount)} of ${totalCount} properties`
-          }
-        </p>
+
       </div>
       
       <div className={styles.grid} role="list" aria-label="Properties">

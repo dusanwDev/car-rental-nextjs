@@ -79,15 +79,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           width="300"
           height="200"
         />
-        <button 
-          className={styles.favoriteBtn} 
-          onClick={(e) => e.stopPropagation()}
-          aria-label={`Add ${title} to favorites`}
-          type="button"
-        >
-          <span aria-hidden="true">♡</span>
-          <span className="sr-only">Add to favorites</span>
-        </button>
         {images.length > 1 && (
           <nav className={styles.dots} aria-label="Property image navigation">
             {images.map((_, idx) => (

@@ -134,7 +134,6 @@ const LandingPage: React.FC = () => {
       <FAQAccordion />
       <CircularMarquee />
       <Footer />
-      <FooterHeroBanner />
     </main>
   );
 };

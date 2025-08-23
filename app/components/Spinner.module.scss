@@ -1,4 +1,5 @@
-@import '../styles/variables.scss';
+
+@use '../styles/variables' as vars;
 
 .spinnerContainer {
   display: flex;
@@ -11,8 +12,8 @@
 .spinner {
   width: 50px;
   height: 50px;
-  border: 5px solid $border-color;
-  border-top: 5px solid $primary-color;
+  border: 5px solid vars.$border-color;
+  border-top: 5px solid vars.$primary-color;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

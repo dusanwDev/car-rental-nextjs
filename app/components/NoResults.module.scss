@@ -1,4 +1,5 @@
-@import '../styles/variables.scss';
+
+@use '../styles/variables' as vars;
 
 .noResultsContainer {
   display: flex;
@@ -6,31 +7,31 @@
   align-items: center;
   justify-content: center;
   min-height: 300px;
-  padding: $spacing-xl;
+  padding: vars.$spacing-xl;
   text-align: center;
 }
 
 .icon {
   font-size: 4rem;
-  margin-bottom: $spacing-lg;
-  color: $text-color;
+  margin-bottom: vars.$spacing-lg;
+  color: vars.$text-color;
   
   &.error {
-    color: $error-color;
+    color: vars.$error-color;
     font-size: 5rem;
     font-weight: bold;
   }
 }
 
 .title {
-  font-size: $font-size-2xl;
-  color: $text-color;
-  margin-bottom: $spacing-md;
+  font-size: vars.$font-size-2xl;
+  color: vars.$text-color;
+  margin-bottom: vars.$spacing-md;
 }
 
 .message {
-  font-size: $font-size-lg;
-  color: $text-color;
+  font-size: vars.$font-size-lg;
+  color: vars.$text-color;
   opacity: 0.8;
   max-width: 500px;
   line-height: 1.5;

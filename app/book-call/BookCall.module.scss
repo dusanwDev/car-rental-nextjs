@@ -1,4 +1,4 @@
-@import '../styles/variables.scss';
+@use '../styles/variables' as vars;
 
 // Screen reader only class
 .sr-only {
@@ -14,25 +14,25 @@
 }
 
 .bookCall {
-  padding: $spacing-xl $spacing-md;
+  padding: vars.$spacing-xl vars.$spacing-md;
   max-width: 1200px;
   margin: 0 auto;
-  font-family: $font-family;
+  font-family: vars.$font-family;
 }
 
 .hero {
   text-align: center;
-  margin-bottom: $spacing-2xl;
+  margin-bottom: vars.$spacing-2xl;
 
   h1 {
-    font-size: $font-size-4xl;
-    color: $primary-color;
-    margin-bottom: $spacing-md;
+    font-size: vars.$font-size-4xl;
+    color: vars.$primary-color;
+    margin-bottom: vars.$spacing-md;
   }
 
   .subtitle {
-    font-size: $font-size-lg;
-    color: $text-color;
+    font-size: vars.$font-size-lg;
+    color: vars.$text-color;
     max-width: 600px;
     margin: 0 auto;
   }
@@ -51,7 +51,7 @@
 }
 
 .info {
-  margin-top: $spacing-2xl;
+  margin-top: vars.$spacing-2xl;
   text-align: center;
 }
 
@@ -59,13 +59,13 @@
   max-width: 600px;
   margin: 0 auto;
   background: white;
-  padding: $spacing-xl;
-  border-radius: $border-radius-lg;
-  box-shadow: $shadow-md;
+  padding: vars.$spacing-xl;
+  border-radius: vars.$border-radius-lg;
+  box-shadow: vars.$shadow-md;
 
   h2 {
-    color: $primary-color;
-    margin-bottom: $spacing-lg;
+    color: vars.$primary-color;
+    margin-bottom: vars.$spacing-lg;
   }
 
   ul {
@@ -74,9 +74,9 @@
     text-align: left;
 
     li {
-      padding: $spacing-md 0;
-      border-bottom: 1px solid $border-color;
-      color: $text-color;
+      padding: vars.$spacing-md 0;
+      border-bottom: 1px solid vars.$border-color;
+      color: vars.$text-color;
 
       &:last-child {
         border-bottom: none;
@@ -84,8 +84,8 @@
 
       &:before {
         content: "✓";
-        color: $primary-color;
-        margin-right: $spacing-sm;
+        color: vars.$primary-color;
+        margin-right: vars.$spacing-sm;
       }
     }
   }
@@ -95,40 +95,40 @@
   max-width: 600px;
   margin: 0 auto;
   background: white;
-  padding: $spacing-xl;
-  border-radius: $border-radius-lg;
-  box-shadow: $shadow-md;
+  padding: vars.$spacing-xl;
+  border-radius: vars.$border-radius-lg;
+  box-shadow: vars.$shadow-md;
 
   form {
     display: flex;
     flex-direction: column;
-    gap: $spacing-lg;
+    gap: vars.$spacing-lg;
   }
 
   .formGroup {
     display: flex;
     flex-direction: column;
-    gap: $spacing-sm;
+    gap: vars.$spacing-sm;
 
     label {
       font-weight: 500;
-      color: $text-color;
+      color: vars.$text-color;
     }
 
     select, input {
-      padding: $spacing-md;
-      border: 1px solid $border-color;
-      border-radius: $border-radius-md;
-      font-size: $font-size-base;
+      padding: vars.$spacing-md;
+      border: 1px solid vars.$border-color;
+      border-radius: vars.$border-radius-md;
+      font-size: vars.$font-size-base;
       transition: border-color 0.2s;
 
       &:focus {
         outline: none;
-        border-color: $primary-color;
+        border-color: vars.$primary-color;
       }
 
       &.error {
-        border-color: $error-color;
+        border-color: vars.$error-color;
       }
     }
 
@@ -139,28 +139,28 @@
   }
 
   .errorMessage {
-    color: $error-color;
-    font-size: $font-size-sm;
-    margin-top: $spacing-xs;
+    color: vars.$error-color;
+    font-size: vars.$font-size-sm;
+    margin-top: vars.$spacing-xs;
   }
 
   .phoneInput {
     :global(.PhoneInputInput) {
-      padding: $spacing-md;
-      border: 1px solid $border-color;
-      border-radius: $border-radius-md;
-      font-size: $font-size-base;
+      padding: vars.$spacing-md;
+      border: 1px solid vars.$border-color;
+      border-radius: vars.$border-radius-md;
+      font-size: vars.$font-size-base;
       transition: border-color 0.2s;
       width: 100%;
 
       &:focus {
         outline: none;
-        border-color: $primary-color;
+        border-color: vars.$primary-color;
       }
     }
 
     :global(.PhoneInputCountry) {
-      margin-right: $spacing-sm;
+      margin-right: vars.$spacing-sm;
       background: none;
       border: none;
       padding: 0;
@@ -195,23 +195,23 @@
     :global(.PhoneInputCountrySelectArrow) {
       font-size: 1.5rem;
       margin-left: 0.25rem;
-      color: $primary-color;
+      color: vars.$primary-color;
     }
   }
 
   .submitBtn {
-    background-color: $primary-color;
+    background-color: vars.$primary-color;
     color: white;
-    padding: $spacing-md;
+    padding: vars.$spacing-md;
     border: none;
-    border-radius: $border-radius-md;
-    font-size: $font-size-lg;
+    border-radius: vars.$border-radius-md;
+    font-size: vars.$font-size-lg;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: $secondary-color;
+      background-color: vars.$secondary-color;
     }
   }
 }
@@ -221,37 +221,37 @@
   max-width: 600px;
   margin: 0 auto;
   background: white;
-  padding: $spacing-2xl $spacing-xl;
-  border-radius: $border-radius-lg;
-  box-shadow: $shadow-md;
+  padding: vars.$spacing-2xl vars.$spacing-xl;
+  border-radius: vars.$border-radius-lg;
+  box-shadow: vars.$shadow-md;
 
   h1 {
-    color: $primary-color;
-    margin-bottom: $spacing-xl;
+    color: vars.$primary-color;
+    margin-bottom: vars.$spacing-xl;
   }
 
   .confirmationDetails {
-    margin-bottom: $spacing-xl;
-    color: $text-color;
+    margin-bottom: vars.$spacing-xl;
+    color: vars.$text-color;
 
     p {
-      margin: $spacing-sm 0;
+      margin: vars.$spacing-sm 0;
     }
   }
 
   .newBookingBtn {
-    background-color: $primary-color;
+    background-color: vars.$primary-color;
     color: white;
-    padding: $spacing-md $spacing-xl;
+    padding: vars.$spacing-md vars.$spacing-xl;
     border: none;
-    border-radius: $border-radius-md;
-    font-size: $font-size-lg;
+    border-radius: vars.$border-radius-md;
+    font-size: vars.$font-size-lg;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: $secondary-color;
+      background-color: vars.$secondary-color;
     }
   }
 }
@@ -278,27 +278,27 @@
   }
 }
 
-@media (max-width: $breakpoint-md) {
+@media (max-width: vars.$breakpoint-md) {
   .bookCall {
-    padding: $spacing-md;
+    padding: vars.$spacing-md;
 
     .hero {
       h1 {
-        font-size: $font-size-3xl;
+        font-size: vars.$font-size-3xl;
       }
 
       .subtitle {
-        font-size: $font-size-base;
+        font-size: vars.$font-size-base;
       }
     }
 
     .bookingForm {
-      padding: $spacing-lg;
+      padding: vars.$spacing-lg;
     }
 
     .info {
       .infoCard {
-        padding: $spacing-lg;
+        padding: vars.$spacing-lg;
       }
     }
   }

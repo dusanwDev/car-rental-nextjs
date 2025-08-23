@@ -104,6 +104,10 @@
         margin-left: 5px;
       }
 
+      /* Hide scrollbar for IE, Edge and Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+
       /* Make all direct children (inputs and selects) equal width */
       > * {
         flex: 1;
@@ -114,10 +118,6 @@
       &::-webkit-scrollbar {
         display: none;
       }
-
-      /* Hide scrollbar for IE, Edge and Firefox */
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
 
       @media (max-width: 768px) {
         flex-wrap: wrap;

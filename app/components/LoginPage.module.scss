@@ -226,5 +226,50 @@
       outline: 2px solid #000;
       outline-offset: 2px;
     }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  .demoSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .demoButton {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #0ba46f;
+    border-radius: 12px;
+    background-color: transparent;
+    color: #0ba46f;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 200px;
+
+    &:hover {
+      background-color: #0ba46f;
+      color: white;
+    }
+
+    &:focus {
+      outline: 2px solid #0ba46f;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      
+      &:hover {
+        background-color: transparent;
+        color: #0ba46f;
+      }
+    }
   }
 }

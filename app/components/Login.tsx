@@ -110,6 +110,67 @@ const LoginForm: React.FC = () => {
     }
   };
 
+  const handleDemoLogin = async () => {
+    setError(null);
+    
+    if (!isSupabaseReady) {
+      setError('Authentication service is not ready. Please try again in a moment.');
+      return;
+    }
+
+    const demoEmail = '1_manager@yopmail.com';
+    const demoPassword = '1_manager@yopmail.com';
+
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: demoEmail,
+        password: demoPassword,
+      });
+
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          setError('Demo user credentials are invalid. Please contact support.');
+        } else {
+          setError(error.message);
+        }
+        return;
+      }
+
+      if (data?.user) {
+        console.log('Demo login successful, session:', data.session);
+        console.log('User:', data.user);
+        
+        // Get the redirect URL from the query parameters
+        const params = new URLSearchParams(window.location.search);
+        const redirectTo = params.get('redirectedFrom') || '/';
+        
+        // Wait a moment to ensure session is set
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Check session again before redirect
+        const { data: { session } } = await supabase.auth.getSession();
+        console.log('Session before redirect:', session);
+        
+        router.push(redirectTo);
+        router.refresh();
+      }
+    } catch (err) {
+      console.error('Demo login error:', err);
+      if (err instanceof Error) {
+        if (err.message.includes('Failed to fetch')) {
+          setError('Unable to connect to the server. Please check your internet connection.');
+        } else {
+          setError('An unexpected error occurred. Please try again.');
+        }
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSocialLogin = async (provider: 'google' | 'azure' | 'apple') => {
     if (!isSupabaseReady) {
       setError('Authentication service is not ready. Please try again in a moment.');
@@ -228,6 +289,21 @@ const LoginForm: React.FC = () => {
           {loading ? 'Logging in...' : 'Continue'}
         </button>
       </form>
+
+      <div className={styles.demoSection}>
+        <div className={styles.divider}>
+          <span>OR</span>
+        </div>
+        
+        <button 
+          type="button" 
+          className={styles.demoButton} 
+          onClick={handleDemoLogin}
+          disabled={loading || !isSupabaseReady}
+        >
+          {loading ? 'Logging in...' : '🎭 Login as Demo User'}
+        </button>
+      </div>
 
       <p className={styles.signupText}>
         Don't have an account? <a href="/signup">Sign Up</a>
